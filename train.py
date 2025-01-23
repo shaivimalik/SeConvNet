@@ -66,7 +66,7 @@ def scheduler(epoch):
 
 LearningRate_Scheduler = keras.callbacks.LearningRateScheduler(scheduler)
 
-model_checkpoint = keras.callbacks.ModelCheckpoint(os.path.join(save_dir,'model_{epoch:03d}.hdf5'), verbose=1, save_best_only=False, save_weights_only=True)
+model_checkpoint = keras.callbacks.ModelCheckpoint(os.path.join(save_dir,'model_{epoch:03d}.weights.h5'), verbose=1, save_best_only=False, save_weights_only=True)
 
 csv_logger = keras.callbacks.CSVLogger(os.path.join(save_dir,'training.log'), separator=",", append=True)
 
