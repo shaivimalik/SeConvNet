@@ -4,7 +4,12 @@ from tensorflow.keras import Input
 from tensorflow.keras.layers import Conv2D, Activation,BatchNormalization, Add
 import numpy as np
 
-
+from keras.layers import Layer
+class ZeroMaskLayer(Layer):
+    def call(self, inputs):
+        # Use TensorFlow operations to cast and compare
+        return tf.cast(tf.equal(inputs, 0), tf.float32)
+        
 #define SeConv block:
 class SeConv_block(keras.layers.Layer):
     def __init__(self, kernel_size, input_channels, **kwargs):
@@ -84,7 +89,7 @@ def SeConvNet(num_SeConv_block=7,depth=27,filters=64,image_channels=1):
   x = Conv2D(filters=image_channels, kernel_size=(3,3), strides=(1,1), kernel_initializer='Orthogonal', padding='same', use_bias = False, name='Conv'+str(layer_count))(x)
   
   
-  x =  keras.layers.Multiply(name='Multiply')([x, tf.dtypes.cast(tf.math.equal(inputs, 0), tf.float32)])
+  x =  keras.layers.Multiply(name='Multiply')([x, ZeroMaskLayer()(inputs)])
 
   outputs = Add(name='Add')([x, inputs])
 
